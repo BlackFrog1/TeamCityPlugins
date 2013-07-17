@@ -313,6 +313,37 @@ public class PluginConfigurationServiceDefault implements PluginConfigurationSer
 	}
 
 	@Override
+	@Nullable
+	public String getFormattedSharedBuildNumber(int id) throws IOException
+	{
+		this.configLock.readLock().lock();
+
+		try
+		{
+			SharedBuildNumberEntity buildNumber = this.configuration.getBuildNumber(id);
+			if(buildNumber == null)
+				return null;
+
+			int counter = buildNumber.getCounter();
+			this.saveConfiguration();
+
+			String number = buildNumber.getFormat().replace("{0}", Integer.toString(counter));
+
+			if(number.toLowerCase().contains("{d}"))
+			{
+				String date = new SimpleDateFormat(buildNumber.getDateFormat()).format(new Date());
+				number = number.replace("{d}", date).replace("{D}", date);
+			}
+
+			return number;
+		}
+		finally
+		{
+			this.configLock.readLock().unlock();
+		}
+	}
+
+	@Override
 	public void saveSharedBuildNumber(@NotNull SharedBuildNumber sharedBuildNumber) throws IOException
 	{
 		Assert.notNull(sharedBuildNumber, "The shared build number cannot be null.");

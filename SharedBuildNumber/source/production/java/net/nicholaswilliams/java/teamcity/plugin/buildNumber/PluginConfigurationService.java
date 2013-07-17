@@ -60,5 +60,8 @@ public interface PluginConfigurationService
 	@Nullable
 	public String getAndIncrementFormattedSharedBuildNumber(int id) throws IOException;
 
+	@Nullable
+	public String getFormattedSharedBuildNumber(int id) throws IOException;
+
 	public void saveSharedBuildNumber(@NotNull SharedBuildNumber sharedBuildNumber) throws IOException;
 }

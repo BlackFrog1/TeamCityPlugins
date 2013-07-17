@@ -65,6 +65,8 @@ public class BuildNumberPropertiesProvider extends AbstractParameterDescriptionP
 
 	public static final String PARAMETER_PREFIX = "sharedBuildNumber.id";
 
+	public static final String PARAMETER_NEXT_SUFFIX = ".next";
+
 	private PluginConfigurationService configurationService;
 
 	public BuildNumberPropertiesProvider(@NotNull ExtensionHolder extensionHolder,
@@ -90,6 +92,10 @@ public class BuildNumberPropertiesProvider extends AbstractParameterDescriptionP
 		TreeSet<String> parameters = new TreeSet<String>();
 		for(int id : this.configurationService.getAllSharedBuildNumberIds())
 			parameters.add(BuildNumberPropertiesProvider.PARAMETER_PREFIX + id);
+
+		for(int id : this.configurationService.getAllSharedBuildNumberIds())
+			parameters.add(BuildNumberPropertiesProvider.PARAMETER_PREFIX + id + PARAMETER_NEXT_SUFFIX);
+
 		return parameters;
 	}
 
@@ -179,6 +185,7 @@ public class BuildNumberPropertiesProvider extends AbstractParameterDescriptionP
 	private Integer extractBuildIdFromParameter(String parameter)
 	{
 		String idString = parameter.replace(BuildNumberPropertiesProvider.PARAMETER_PREFIX, "");
+		idString = idString.replace(BuildNumberPropertiesProvider.PARAMETER_NEXT_SUFFIX, "");
 
 		return NumberUtils.isDigits(idString) ? Integer.parseInt(idString) : null;
 	}
@@ -193,7 +200,17 @@ public class BuildNumberPropertiesProvider extends AbstractParameterDescriptionP
 			{
 				try
 				{
-					String buildNumber = this.configurationService.getAndIncrementFormattedSharedBuildNumber(id);
+					String buildNumber;
+
+					if(parameter.endsWith(BuildNumberPropertiesProvider.PARAMETER_NEXT_SUFFIX))
+					{
+						buildNumber = this.configurationService.getFormattedSharedBuildNumber(id);
+					}
+					else
+					{
+						buildNumber = this.configurationService.getAndIncrementFormattedSharedBuildNumber(id);
+					}
+
 
 					if(buildNumber == null)
 					{
