@@ -24,8 +24,8 @@
 		<version>{sharedbuildnumber.version}</version>
 		<description>Provides a graphically-managed system for creating shared build numbers and formats to share between build configurations.</description>
 		<vendor>
-			<name>NWTS Java Code</name>
-			<url>http://java.nicholaswilliams.net</url>
+			<name>Timothy Lusk</name>
+			<url>https://github.com/darkcube/TeamCityPlugins</url>
 		</vendor>
 	</info>
 	<deployment use-separate-classloader="true" />
