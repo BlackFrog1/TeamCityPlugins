@@ -21,7 +21,7 @@
 	<info>
 		<name>shared-build-number</name>
 		<display-name>Advanced Shared Build Number</display-name>
-		<version>{sharedbuildnumber.version}</version>
+		<version>1.0.0</version>
 		<description>Provides a graphically-managed system for creating shared build numbers and formats to share between build configurations.</description>
 		<vendor>
 			<name>Timothy Lusk</name>
